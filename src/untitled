@@ -1,0 +1,90 @@
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `mobile` varchar(25) DEFAULT NULL,
+  `username` varchar(55) DEFAULT NULL,
+  `password` varchar(55) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `movies` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `director` varchar(255) DEFAULT NULL,
+  `release_date` date DEFAULT NULL,
+  `language` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `cities` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `cinemas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `city_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `city_fk_idx` (`city_id`),
+  CONSTRAINT `city_fk` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
+);
+
+CREATE TABLE `movie_showtimes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cinema_id` int(8) DEFAULT NULL,
+  `movie_id` int(8) DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `total_seats` int(8) DEFAULT NULL,
+  `available_seats` int(8) DEFAULT NULL,
+  `price` int(8) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cinema_fk_idx` (`cinema_id`),
+  KEY `movie_fk_idx` (`movie_id`),
+  CONSTRAINT `cinema_fk` FOREIGN KEY (`cinema_id`) REFERENCES `cinemas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `movie_fk` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+CREATE TABLE `movie_bookings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(8) DEFAULT NULL,
+  `show_id` int(8) DEFAULT NULL,
+  `booked_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `no_of_tickets` int(4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_fk_idx` (`user_id`),
+  KEY `show_fk_idx` (`show_id`),
+  CONSTRAINT `show_fk` FOREIGN KEY (`show_id`) REFERENCES `movie_showtimes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+
+insert into cities (name) values ('Delhi'),('Bangalore'),('Hyderabad');
+insert into users (name, mobile,username,password) values ('Anshul','+918310871243','anshul','1234'); 
+
+insert into movies (name, director, release_date, language) values 
+('Godzilla vs Kong','Adam Wingard', '2021-03-26', 'English'),
+('Sulthan', 'Bakkiyaraj Kannan', '2021-04-02', 'Tamil');
+
+insert into cinemas (name, city_id) values 
+('M2K Cinema', 1),
+('Wave Cinema',1),
+('PVR Cinemas Koramangala',2),
+('Fun Cinemas',2),
+('Prasads Multiplex',3),
+('Mukta A2 Cinemas',3);
+
+insert into movie_showtimes
+ (cinema_id,movie_id,start_time, end_time, total_seats, available_seats, price)
+values 
+(1,1,'2021-04-04 17:08:28','2021-04-04 19:08:28',100,100,200),
+(1,2,'2021-04-04 17:18:28','2021-04-04 19:18:28',120,100,200),
+(2,2,'2021-04-04 16:18:28','2021-04-04 18:18:28',120,100,200),
+(2,1,'2021-04-04 16:00:28','2021-04-04 18:00:28',110,100,200),
+(3,2,'2021-04-04 16:18:28','2021-04-04 18:18:28',120,100,200),
+(3,1,'2021-04-04 16:00:28','2021-04-04 18:00:28',110,100,200),
+(4,2,'2021-04-04 16:18:28','2021-04-04 18:18:28',120,100,200),
+(5,2,'2021-04-04 16:18:28','2021-04-04 18:18:28',120,100,200),
+(5,1,'2021-04-04 16:00:28','2021-04-04 18:00:28',110,100,200);

@@ -1,0 +1,17 @@
+{
+    "port": 6001,
+    "loggerServiceName": "bookmyshow-booking",
+    "moviesDb": {
+        "host": "127.0.0.1",
+        "port": "3306",
+        "database": "moviesDb",
+        "user": "root",
+        "password": "root",
+        "name": "moviesDb",
+        "connector": "mysql",
+        "charset": "utf8mb4",
+        "dateStrings": true,
+        "connectTimeout": 200000,
+        "acquireTimeout": 200000
+    }
+}
